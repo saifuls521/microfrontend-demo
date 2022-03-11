@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense, useState, useEffect } from "react";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
+import {
+  StylesProvider,
+  createGenerateClassName,
+} from "@material-ui/core/styles";
+import { createBrowserHistory } from "history";
 
-function App() {
+import Progress from "./components/Progress";
+import Header from "./components/Header";
+import Goodlooking from "./components/GoodlookingApp";
+import SomeSite from './components/SomeSiteApp';
+const generateClassName = createGenerateClassName({
+  productionPrefix: "co",
+});
+
+const history = createBrowserHistory();
+
+export default () => {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router history={history}>
+      <StylesProvider generateClassName={generateClassName}>
+        <div>
+          <Header
+            onSignOut={() => setIsSignedIn(false)}
+            isSignedIn={isSignedIn}
+          />
+        <Suspense>
+            <Switch>
+              <Route exact path="/" component={SomeSite} />
+              <Route path="/someSite" component={SomeSite}/>
+              <Route
+                path="/goodlookingSite" component={Goodlooking}/>
+            </Switch>
+          </Suspense>
+        </div>
+      </StylesProvider>
+    </Router>
   );
-}
-
-export default App;
+};

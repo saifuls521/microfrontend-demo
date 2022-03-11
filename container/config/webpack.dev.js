@@ -9,7 +9,7 @@ const devConfig = {
     publicPath: 'http://localhost:5000/',
   },
   devServer: {
-    port: 8080,
+    port: 5000,
     historyApiFallback: {
       index: 'index.html',
     },
